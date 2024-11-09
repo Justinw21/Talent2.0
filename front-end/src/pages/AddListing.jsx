@@ -69,19 +69,7 @@ const AddListing = () => {
                         required
                     />
                 </div>
-                <div>
-                    <label htmlFor="status" className="block text-sm font-medium mb-1">Status</label>
-                    <Select onValueChange={handleStatusChange}>
-                        <SelectTrigger className="w-full p-2">
-                            <span>{listingData.status}</span>
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="Completed">Completed</SelectItem>
-                            <SelectItem value="Processing">Processing</SelectItem>
-                            <SelectItem value="Rejected">Rejected</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
+
                 <Button type="submit" className="w-full mt-4 p-2">
                     Add Listing
                 </Button>

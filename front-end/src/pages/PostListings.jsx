@@ -3,13 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Filter, CheckCircle, XCircle, Clock, Plus } from "lucide-react"; // Added Plus icon for the "Add Listing" button
+import { CheckCircle, XCircle, Clock, Plus } from "lucide-react"; // Added Plus icon for the "Add Listing" button
 
 const PostListing = () => {
-    const [data, setData] = useState([]);
-    const navigate = useNavigate();
-
-    // Example JSON data structure for applicants
     const jsonData = [
         { id: 40901, name: "SWE Intern 2025", datePosted: "14 Nov 2024", department: "IT", status: "Completed" },
         { id: 91042, name: "HR Rep (Full-time)", datePosted: "28 Oct 2024", department: "HR", status: "Processing" },
@@ -17,11 +13,36 @@ const PostListing = () => {
         { id: 1205, name: "Full-Stack Developer Intern", datePosted: "14 Oct 2024", department: "IT", status: "Completed" },
         { id: 4002, name: "Marketing Intern 2025", datePosted: "14 Oct 2024", department: "PR", status: "Processing" },
     ];
+    const [data, setData] = useState(jsonData);
+    const [filteredData, setFilteredData] = useState(data);
+    const [selectedDate, setSelectedDate] = useState('None');
+    const [selectedDepartment, setSelectedDepartment] = useState('None');
+    const [selectedStatus, setSelectedStatus] = useState('None');
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Simulate fetching data and setting it in the state
         setData(jsonData);
+        setFilteredData(jsonData);
     }, []);
+
+    const handleFilterChange = () => {
+        const filtered = data.filter(item => {
+            return (
+                (selectedDate !== 'None' ? item.datePosted === selectedDate : true) &&
+                (selectedDepartment !== 'None' ? item.department === selectedDepartment : true) &&
+                (selectedStatus !== 'None' ? item.status === selectedStatus : true)
+            );
+        });
+        setFilteredData(filtered);
+    };
+
+    const handleResetFilters = () => {
+        setSelectedDate('None');
+        setSelectedDepartment('None');
+        setSelectedStatus('None');
+        setFilteredData(data);
+    };
 
     const StatusBadge = ({ status }) => {
         const statusComponents = {
@@ -38,6 +59,15 @@ const PostListing = () => {
         );
     };
 
+useEffect(() => {
+    // Only apply the filter logic if any of the filters are active (not "None")
+    if (selectedDate !== 'None' || selectedDepartment !== 'None' || selectedStatus !== 'None') {
+        handleFilterChange();
+    } else {
+        setFilteredData(data); // Reset to full data set if no filters are active
+    }
+}, [selectedDate, selectedDepartment, selectedStatus]);
+
     return (
         <section className="p-8">
             <header className="flex items-center justify-between mb-6">
@@ -50,44 +80,65 @@ const PostListing = () => {
             </header>
 
             <div className="flex items-center gap-4 mb-4">
-                <Button variant="outline" className="flex items-center">
-                    <Filter className="w-4 h-4 mr-2" />
-                    Filter By
-                </Button>
-                <Select>
-                    <SelectTrigger className="w-32">
-                        <span>Date</span>
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="14 Feb 2019">14 Feb 2019</SelectItem>
-                    </SelectContent>
-                </Select>
-                <Select>
-                    <SelectTrigger className="w-32">
-                        <span>Department</span>
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="IT">IT</SelectItem>
-                        <SelectItem value="HR">HR</SelectItem>
-                        <SelectItem value="PR">PR</SelectItem>
-                    </SelectContent>
-                </Select>
-                <Select>
-                    <SelectTrigger className="w-32">
-                        <span>Status</span>
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="Completed">Completed</SelectItem>
-                        <SelectItem value="Processing">Processing</SelectItem>
-                        <SelectItem value="Rejected">Rejected</SelectItem>
-                    </SelectContent>
-                </Select>
-                <Button variant="outline">Reset Filter</Button>
-                <Button variant="outline" className="flex items-center">
+                <div className="relative">
+                    <Select onValueChange={(value) => setSelectedDate(value)} value={selectedDate}>
+                        <SelectTrigger className="w-32">
+                            <span>{selectedDate !== 'None' ? `Date: ${selectedDate}` : 'Date'}</span>
+                        </SelectTrigger>
+                        {selectedDate !== 'None' && (
+                            <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                                !
+                            </span>
+                        )}
+                        <SelectContent>
+                            <SelectItem value="None">None</SelectItem>
+                            <SelectItem value="14 Nov 2024">14 Nov 2024</SelectItem>
+                            <SelectItem value="28 Oct 2024">28 Oct 2024</SelectItem>
+                            <SelectItem value="14 Oct 2024">14 Oct 2024</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="relative">
+                    <Select onValueChange={(value) => setSelectedDepartment(value)} value={selectedDepartment}>
+                        <SelectTrigger className="w-32">
+                            <span>{selectedDepartment !== 'None' ? `Dept: ${selectedDepartment}` : 'Department'}</span>
+                        </SelectTrigger>
+                        {selectedDepartment !== 'None' && (
+                            <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                                !
+                            </span>
+                        )}
+                        <SelectContent>
+                            <SelectItem value="None">None</SelectItem>
+                            <SelectItem value="IT">IT</SelectItem>
+                            <SelectItem value="HR">HR</SelectItem>
+                            <SelectItem value="PR">PR</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="relative">
+                    <Select onValueChange={(value) => setSelectedStatus(value)} value={selectedStatus}>
+                        <SelectTrigger className="w-32">
+                            <span>{selectedStatus !== 'None' ? `Status: ${selectedStatus}` : 'Status'}</span>
+                        </SelectTrigger>
+                        {selectedStatus !== 'None' && (
+                            <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                                !
+                            </span>
+                        )}
+                        <SelectContent>
+                            <SelectItem value="None">None</SelectItem>
+                            <SelectItem value="Completed">Completed</SelectItem>
+                            <SelectItem value="Processing">Processing</SelectItem>
+                            <SelectItem value="Rejected">Rejected</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <Button variant="outline" onClick={handleResetFilters}>Reset Filter</Button>
+                <Button variant="outline" className="flex items-center hover:bg-green-500 hover:text-white transition-colors">
                     <Plus className="w-4 h-4 mr-2" />
                     Add Listing
                 </Button>
-
             </div>
 
             <div className="mb-8">
@@ -103,7 +154,7 @@ const PostListing = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data.map((item) => (
+                        {filteredData.map((item) => (
                             <TableRow key={item.id}>
                                 <TableCell>{item.id}</TableCell>
                                 <TableCell>{item.name}</TableCell>

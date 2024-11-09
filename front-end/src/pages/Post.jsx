@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Filter, CheckCircle, XCircle, Clock } from "lucide-react"; // Icons from lucide-react for status and filter icon
+import { useParams } from 'react-router-dom';
 
 const applicants = [
-  { id: 40901, name: "SWE Intern 2025", datePosted: "14 Nov 2024", department: "IT", status: "Completed" },
-  { id: 91042, name: "HR Rep (Full-time)", datePosted: "28 Oct 2024", department: "HR", status: "Processing" },
-  { id: 10805, name: "Recruiter (Full-time)", datePosted: "14 Oct 2024", department: "HR", status: "Rejected" },
-  { id: 1205, name: "Full-Stack Developer Intern", datePosted: "14 Oct 2024", department: "IT", status: "Completed" },
-  { id: 4002, name: "Marketing Intern 2025", datePosted: "14 Oct 2024", department: "PR", status: "Processing" },
+  { id: 40901, name: "Applicant 1", datePosted: "14 Nov 2024", department: "IT", status: "Completed" },
+  { id: 91042, name: "Applicant 2", datePosted: "28 Oct 2024", department: "HR", status: "Processing" },
+  { id: 10805, name: "Applicant 3", datePosted: "14 Oct 2024", department: "HR", status: "Rejected" },
+  { id: 1205, name: "Applicant 4", datePosted: "14 Oct 2024", department: "IT", status: "Completed" },
+  { id: 4002, name: "Applicant 5", datePosted: "14 Oct 2024", department: "PR", status: "Processing" },
 ];
 
 const employees = [
@@ -35,6 +36,14 @@ const StatusBadge = ({ status }) => {
 
 const Post = () => {
   const navigate = useNavigate();
+  const { jobId } = useParams();
+
+  // return (
+  //   <section>
+  //     <h1 className="text-2xl font-semibold">Job Details for ID: {jobId}</h1>
+  //     {/* Render job details here, either by fetching from an API or using hardcoded data */}
+  //   </section>
+  // );
 
   return (
     <section className="p-8">
@@ -140,6 +149,11 @@ const Post = () => {
           </TableBody>
         </Table>
       </div>
+
+      <Button onClick={() => navigate('/pots')} variant="outline" className="mt-4">
+        Back to Pots Page
+      </Button>
+
     </section>
   );
 };

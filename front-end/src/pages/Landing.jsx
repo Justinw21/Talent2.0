@@ -19,7 +19,7 @@ const Landing = () => {
           className="bg-primary text-white font-semibold px-6 py-2 rounded-lg hover:bg-primary-foreground"
           onClick={() => navigate('/Pots')}
         >
-          Post
+          Pots
         </Button>
       </div>
     </section>

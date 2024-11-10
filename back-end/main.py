@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from db.db import db
+import db.db as db
 
 # Define a Pydantic model for inserting data into the table
 class User(BaseModel):

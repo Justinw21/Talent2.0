@@ -11,7 +11,7 @@ c.execute("CREATE TABLE if not Exists recruiter(email TEXT primary key, password
 
 # Utility function to connect to the SQLite database
 def get_db_connection():
-    conn = sqlite3.connect("info.db")
+    conn = sqlite3.connect(DB_FILE)
     conn.row_factory = sqlite3.Row  # This allows dictionary-like row access
     return conn
 

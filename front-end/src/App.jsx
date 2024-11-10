@@ -9,6 +9,7 @@ import RegisterPage from './pages/Register';
 import LoginPage from './pages/Login';
 import PotsPage from './pages/Pots';
 import AddListing from './pages/AddListing';
+import MatchingsPage from './pages/Matchings';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/Pots" element={<PotsPage />} />
           <Route path="/add-listing" element={<AddListing />} />
+          <Route path="/matchings" element={<MatchingsPage />} />
         </Routes>
       </div>
     </Router>

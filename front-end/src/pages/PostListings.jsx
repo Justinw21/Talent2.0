@@ -155,7 +155,18 @@ useEffect(() => {
                     </TableHeader>
                     <TableBody>
                         {filteredData.map((item) => (
-                            <TableRow key={item.id}>
+                            <TableRow key={item.id} 
+                            onClick={() => navigate('/post', 
+                                { state: 
+                                    { posting:  {
+                                        id: item.id,
+                                        name: item.name,
+                                        datePosted: item.datePosted,
+                                        department: item.department,
+                                        status: item.status,
+                                        indexes: [item.id % 10 * 50, item.id % 10 * 50 + 80]
+                                    }} })}
+                            >
                                 <TableCell>{item.id}</TableCell>
                                 <TableCell>{item.name}</TableCell>
                                 <TableCell>...</TableCell>

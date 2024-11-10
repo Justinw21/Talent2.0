@@ -6,7 +6,7 @@ import random
 from faker import Faker
 import matplotlib.pyplot as plt
 import networkx as nx
-from db_maker import generate_person_data
+# from db_maker import generate_person_data
 
 # Function to preprocess data into strings for vectorization
 def preprocess_data(person):
@@ -22,7 +22,6 @@ def preprocess_data(person):
 def match_people(df : pd.DataFrame):
     interviewees = df[df['interviewee'] == True].reset_index(drop=True)
     interviewers = df[df['interviewee'] == False].reset_index(drop=True)
-
     # Vectorize data
     vectorizer = TfidfVectorizer()
 
@@ -30,14 +29,11 @@ def match_people(df : pd.DataFrame):
     combined_data = pd.concat([interviewees, interviewers])
     combined_data['text'] = combined_data.apply(preprocess_data, axis=1)
     tfidf_matrix = vectorizer.fit_transform(combined_data['text'])
-
     # Split the matrix for interviewees and interviewers
     interviewee_vectors = tfidf_matrix[:len(interviewees)]
     interviewer_vectors = tfidf_matrix[len(interviewees):]
-
     # Compute cosine similarity between interviewees and interviewers
     similarity_matrix = cosine_similarity(interviewee_vectors, interviewer_vectors)
-
     # Find the best matches for each interviewee
     pairings = []
     for i, interviewee in enumerate(interviewees['name']):
@@ -101,6 +97,11 @@ def plot_pairing_network(pairings, similarity_matrix, interviewees, interviewers
 # Run visualizations
 # plot_similarity_scores(pairings)
 # plot_pairing_network(pairings, similarity_matrix, interviewees['name'].tolist(), interviewers['name'].tolist())
+
+def generate_matches(data):
+    df = pd.DataFrame(data)
+    pairings = match_people(df)
+    return pairings
 
 
 if __name__ == "__main__":

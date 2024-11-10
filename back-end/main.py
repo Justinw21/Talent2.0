@@ -1,7 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import json
 import db.db as db
-
+person_data = []
+with open('person_data.json') as f:
+    person_data = json.load(f)
+# print(person_data)
 # Define a Pydantic model for inserting data into the table
 class User(BaseModel):
     email: str
@@ -19,14 +23,17 @@ app = FastAPI()
 def root():
     return {"Hello", "World"}
 
-# Route to add a new user to the database
-@app.post("/add_user/")
-def add_user(user: User):
-    db.insert_user(user)  # Call the function from db.py to insert user
-    return {"message": "User added successfully"}
 
-# Route to retrieve a user by email
-@app.get("/get_user/{email}")
-def get_user(email: str):
-    user_data = db.get_user_by_email(email)  # Call the function from db.py to get user
-    return user_data
+
+# # Route to add a new user to the database
+# @app.post("/add_user/")
+# def add_user(user: User):
+#     db.insert_user(user)  # Call the function from db.py to insert user
+#     return {"message": "User added successfully"}
+
+# # Route to retrieve a user by email
+# @app.get("/get_user/{email}")
+# def get_user(email: str):
+#     user_data = db.get_user_by_email(email)  # Call the function from db.py to get user
+#     return user_data
+

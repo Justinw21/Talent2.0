@@ -8,6 +8,7 @@ c = db.cursor()
 # Creating table
 c.execute("CREATE TABLE if not Exists info(email TEXT primary key, name TEXT, hobbies TEXT, places TEXT, companies TEXT, pace INTEGER, independent INTEGER, size INTEGER)")
 c.execute("CREATE TABLE if not Exists recruiter(email TEXT primary key, password TEXT)")
+c.execute("CREATE TABLE if not Exists listings(id INT primary key, application TEXT, job_desc TEXT, date_posted TEXT, dept TEXT, status TEXT)")
 
 # Utility function to connect to the SQLite database
 def get_db_connection():
